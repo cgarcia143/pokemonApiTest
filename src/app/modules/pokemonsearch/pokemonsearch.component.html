@@ -1,0 +1,86 @@
+<div class="container my-12 mx-auto px-4 md:px-12">
+    <div class="flex flex-wrap -mx-1 lg:-mx-4">
+        
+        <div class="grid md:grid-cols-3 sm:grid-cols-1 gap-6 w-full mt-8 ">
+
+            <div class="flex flex-col sm:col-span-2 md:col-span-2 bg-card bg-white shadow-lg rounded-lg p-6 h-full max-h-[29rem]" >
+
+            <div class="flex flex-col gap-x-2 sm:flex-row items-center">
+
+                <mat-form-field class="w-full flex-auto fuse-mat-dense">
+                    <input matInput placeholder="Busquedad" #value (keyup)="busquedadFiltro(value.value)" aria-label="Country" [matAutocomplete]="auto" [formControl]="busquedadControl">
+                    <mat-autocomplete #auto="matAutocomplete">
+                        <cdk-virtual-scroll-viewport class="autocomplete-test-viewport" itemSize="25" [ngStyle]="{'height': height}">
+                            <mat-option *cdkVirtualFor="let pokemon of pokemonFilterList | async" [value]="pokemon.name">
+                                <span>{{ pokemon.name }}</span>
+                            </mat-option>
+                        </cdk-virtual-scroll-viewport>
+                    </mat-autocomplete>
+                </mat-form-field>
+
+            </div>
+
+            <div class="overflow-x-auto">
+                
+                <table
+                class="w-full bg-transparent"
+                mat-table
+                matSort
+                [dataSource]="pokemonesDataSource"
+                [trackBy]="trackByFn"
+                #tabla
+                >
+
+                    <ng-container matColumnDef="id">
+                        <th mat-header-cell *matHeaderCellDef>#</th>
+                        <td mat-cell *matCellDef="let row; let i = index">{{i}}</td>
+                    </ng-container>
+
+                    <ng-container *ngFor="let columna of columnas; let i = index" [matColumnDef]="columna.nombreCampo" >
+                        
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef>
+                            {{ columna.nombreColumna |
+                                titlecase
+                            }}
+                        </th>
+                        <td  mat-cell *matCellDef="let emp">
+                            <span class="pr-6 font-medium whitespace-nowrap">
+                                {{ emp[columna.nombreCampo] }}
+                            </span>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="detalles">
+                        <th mat-header-cell *matHeaderCellDef>Detalles</th>
+                        <td mat-cell *matCellDef="let row; let i = index">
+                          <button mat-icon-button color="accent" (click)="verDetalle(row.name)">
+                            <mat-icon>visibility</mat-icon>
+                          </button>
+                        </td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let emp; columns: displayedColumns"></tr>
+                </table>
+
+            </div>
+
+            <div class="grid place-items-center pt-6"  class="overflow-x-auto">
+                <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                showFirstLastButtons >
+                </mat-paginator>
+            </div>
+
+            </div>
+
+            <div class="grid sm:grid-cols-1 gap-6 w-full">
+
+                <app-card-details [datos]="this.datos" *ngIf="detalles"></app-card-details>
+                <app-table-letters [datos]="this.totalesPorLetra"></app-table-letters>
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+

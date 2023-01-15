@@ -1,0 +1,12 @@
+<article
+  class="bg-white flex flex-col max-w-xs mx-auto overflow-hidden rounded-lg shadow-lg w-full">
+  <img src="{{datos.img}}"/>
+  <div class="px-4 py-6">
+    <h2 class="font-bold text-2xl">{{datos.name}}</h2>
+    <dl *ngFor="let columna of datos.columnas">
+      <dt class="font-bold mt-2">{{columna.nombreColumna}}</dt>
+      <dd>{{columna.nombreCampo}}</dd>
+    </dl>
+  </div>
+</article>
+
